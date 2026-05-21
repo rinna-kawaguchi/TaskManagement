@@ -1,0 +1,371 @@
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: system-ui, -apple-system, sans-serif;
+  background: #1d7bd4;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ─── Header ─── */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 20px;
+  background: rgba(0, 0, 0, 0.15);
+  backdrop-filter: blur(4px);
+}
+
+.header-title {
+  color: #fff;
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+/* ─── Board ─── */
+.board {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 16px 20px;
+  overflow-x: auto;
+  flex: 1;
+}
+
+/* ─── List (Column) ─── */
+.list {
+  background: #ebecf0;
+  border-radius: 10px;
+  width: 272px;
+  min-width: 272px;
+  display: flex;
+  flex-direction: column;
+  max-height: calc(100vh - 80px);
+}
+
+.list.drag-over {
+  outline: 2px dashed #1d7bd4;
+  outline-offset: 2px;
+}
+
+.list-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 12px 8px;
+  gap: 6px;
+}
+
+.list-title {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #172b4d;
+  flex: 1;
+  cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.list-title-input {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #172b4d;
+  border: 2px solid #1d7bd4;
+  border-radius: 4px;
+  padding: 2px 6px;
+  flex: 1;
+  outline: none;
+}
+
+.list-count {
+  font-size: 0.8rem;
+  color: #5e6c84;
+  background: #dde0e6;
+  border-radius: 10px;
+  padding: 1px 7px;
+  white-space: nowrap;
+}
+
+.list-delete-btn {
+  background: none;
+  border: none;
+  color: #5e6c84;
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 2px 4px;
+  border-radius: 4px;
+  line-height: 1;
+}
+.list-delete-btn:hover {
+  color: #c0392b;
+  background: #fce8e6;
+}
+
+.cards {
+  padding: 0 8px;
+  overflow-y: auto;
+  flex: 1;
+  min-height: 4px;
+}
+
+/* ─── Card ─── */
+.card {
+  background: #fff;
+  border-radius: 6px;
+  padding: 10px 12px;
+  margin-bottom: 8px;
+  cursor: pointer;
+  box-shadow: 0 1px 2px rgba(9, 30, 66, 0.15);
+  transition: box-shadow 0.15s, transform 0.1s;
+  user-select: none;
+}
+
+.card:hover {
+  box-shadow: 0 3px 8px rgba(9, 30, 66, 0.2);
+  transform: translateY(-1px);
+}
+
+.card.dragging {
+  opacity: 0.4;
+}
+
+.card.drag-placeholder {
+  border: 2px dashed #1d7bd4;
+  background: #e8f0fe;
+  box-shadow: none;
+  cursor: default;
+}
+
+.card-title {
+  font-size: 0.875rem;
+  color: #172b4d;
+  font-weight: 500;
+  word-break: break-word;
+}
+
+.card-due {
+  font-size: 0.75rem;
+  color: #5e6c84;
+  margin-top: 6px;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.card-due.overdue {
+  color: #c0392b;
+  font-weight: 600;
+}
+
+/* ─── Add Card ─── */
+.add-card-area {
+  padding: 6px 8px 10px;
+}
+
+.add-card-btn {
+  width: 100%;
+  background: none;
+  border: none;
+  border-radius: 6px;
+  color: #5e6c84;
+  font-size: 0.875rem;
+  padding: 8px 10px;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+.add-card-btn:hover {
+  background: #c8d0da;
+  color: #172b4d;
+}
+
+.add-card-form {
+  display: none;
+  flex-direction: column;
+  gap: 6px;
+}
+.add-card-form.open {
+  display: flex;
+}
+
+.add-card-input {
+  border: 2px solid #1d7bd4;
+  border-radius: 6px;
+  padding: 8px 10px;
+  font-size: 0.875rem;
+  resize: none;
+  outline: none;
+  font-family: inherit;
+  color: #172b4d;
+}
+
+.add-card-actions {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+/* ─── Buttons ─── */
+.btn {
+  border: none;
+  border-radius: 6px;
+  padding: 8px 14px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: filter 0.15s;
+}
+.btn:hover {
+  filter: brightness(0.9);
+}
+.btn-primary {
+  background: #0065ff;
+  color: #fff;
+}
+.btn-secondary {
+  background: transparent;
+  color: #42526e;
+  padding: 8px 6px;
+}
+.btn-secondary:hover {
+  background: transparent;
+  color: #172b4d;
+  filter: none;
+}
+.btn-danger {
+  background: #eb5a46;
+  color: #fff;
+}
+.btn-sm {
+  padding: 5px 10px;
+  font-size: 0.8rem;
+}
+
+/* ─── Add List placeholder ─── */
+.add-list-placeholder {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+  width: 272px;
+  min-width: 272px;
+  height: 48px;
+}
+
+/* ─── Modal ─── */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  z-index: 100;
+  align-items: center;
+  justify-content: center;
+}
+.modal-overlay.open {
+  display: flex;
+}
+
+.modal {
+  background: #f4f5f7;
+  border-radius: 10px;
+  width: 500px;
+  max-width: 95vw;
+  padding: 28px 28px 22px;
+  position: relative;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.modal-close {
+  position: absolute;
+  top: 12px;
+  right: 14px;
+  background: none;
+  border: none;
+  font-size: 1.3rem;
+  color: #5e6c84;
+  cursor: pointer;
+  line-height: 1;
+  padding: 4px 6px;
+  border-radius: 4px;
+}
+.modal-close:hover {
+  background: #dfe1e6;
+  color: #172b4d;
+}
+
+.modal-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #172b4d;
+  border: none;
+  background: transparent;
+  width: 100%;
+  margin-bottom: 20px;
+  padding: 6px 8px;
+  border-radius: 4px;
+  font-family: inherit;
+  outline: none;
+}
+.modal-title:focus {
+  background: #fff;
+  box-shadow: 0 0 0 2px #1d7bd4;
+}
+
+.modal-section {
+  margin-bottom: 18px;
+}
+
+.modal-label {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #5e6c84;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 6px;
+}
+
+.modal-textarea {
+  width: 100%;
+  border: 2px solid #dfe1e6;
+  border-radius: 6px;
+  padding: 8px 10px;
+  font-size: 0.875rem;
+  font-family: inherit;
+  color: #172b4d;
+  resize: vertical;
+  outline: none;
+  background: #fff;
+}
+.modal-textarea:focus {
+  border-color: #1d7bd4;
+}
+
+.modal-input {
+  border: 2px solid #dfe1e6;
+  border-radius: 6px;
+  padding: 8px 10px;
+  font-size: 0.875rem;
+  font-family: inherit;
+  color: #172b4d;
+  outline: none;
+  background: #fff;
+}
+.modal-input:focus {
+  border-color: #1d7bd4;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 8px;
+}

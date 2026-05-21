@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TaskBoard</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="header">
+    <h1 class="header-title">TaskBoard</h1>
+    <button class="btn btn-primary" id="add-list-btn">+ リスト追加</button>
+  </header>
+
+  <main class="board" id="board"></main>
+
+  <!-- カード詳細モーダル -->
+  <div class="modal-overlay" id="modal-overlay">
+    <div class="modal" role="dialog" aria-modal="true">
+      <button class="modal-close" id="modal-close" aria-label="閉じる">×</button>
+      <input class="modal-title" id="modal-title" type="text" placeholder="タイトル" />
+      <div class="modal-section">
+        <label class="modal-label">📝 説明</label>
+        <textarea class="modal-textarea" id="modal-description" placeholder="説明を入力..." rows="4"></textarea>
+      </div>
+      <div class="modal-section">
+        <label class="modal-label">📅 期限日</label>
+        <input class="modal-input" id="modal-due-date" type="date" />
+      </div>
+      <div class="modal-actions">
+        <button class="btn btn-danger" id="modal-delete-btn">削除</button>
+        <button class="btn btn-primary" id="modal-save-btn">保存</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
