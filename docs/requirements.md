@@ -30,7 +30,7 @@ AIエンジニアコースの課題として、Trelloライクなタスク管理
 
 | レイヤー | 技術候補 |
 |----------|----------|
-| フロントエンド | Next.js (React) + TypeScript |
+| フロントエンド | React + TypeScript |
 | スタイリング | Tailwind CSS |
 | ドラッグ&ドロップ | @dnd-kit/core |
 | バックエンド | Spring Boot (Java) |
@@ -69,7 +69,7 @@ AIエンジニアコースの課題として、Trelloライクなタスク管理
 
 ## 5. 開発フェーズ（推奨順）
 
-1. **Phase 1** — プロジェクトセットアップ（Next.js フロントエンド + Spring Boot バックエンド + PostgreSQL）
+1. **Phase 1** — プロジェクトセットアップ（React フロントエンド + Spring Boot バックエンド + PostgreSQL）
 2. **Phase 2** — リスト・カードのCRUD（REST API + UI）
 3. **Phase 3** — ドラッグ&ドロップ（リスト並び替え・カード移動）
 4. **Phase 4** — カード詳細（期限・説明文）
