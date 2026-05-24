@@ -22,3 +22,12 @@ docker compose up -d db
 ```
 
 バックエンド起動前にPostgreSQLコンテナが起動している必要がある。
+
+## Git運用ルール
+
+CONTRIBUTING.md に従い、以下を必ず守ること。
+
+- **mainブランチへの直接コミット・pushは禁止**
+- 作業は必ず feature/fix/refactor ブランチを切って行う
+- ブランチ名にはIssue番号を含める（例: `feature/#12-add-task-api`）
+- 変更はPRを通じてmainにマージする
