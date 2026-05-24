@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface CardRepository extends JpaRepository<Card, Long> {
     List<Card> findByBoardListIdOrderByPositionAsc(Long listId);
+    List<Card> findByTitleContainingIgnoreCaseOrDescriptionContainingIgnoreCase(String title, String description);
 }
