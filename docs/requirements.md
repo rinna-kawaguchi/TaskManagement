@@ -28,14 +28,15 @@ AIエンジニアコースの課題として、Trelloライクなタスク管理
 
 ## 2. 技術スタック（推奨）
 
-| レイヤー | 技術候補 |
-|----------|----------|
-| フロントエンド | React + TypeScript |
-| スタイリング | Tailwind CSS |
-| ドラッグ&ドロップ | @dnd-kit/core |
-| バックエンド | Spring Boot (Java) |
-| データベース | PostgreSQL |
-| ORM | Spring Data JPA (Hibernate) |
+| レイヤー | 技術候補 | バージョン |
+|----------|----------|------------|
+| フロントエンド | React + TypeScript | React 19 / TypeScript 6 |
+| ビルドツール | Vite | 8.x |
+| スタイリング | Tailwind CSS | 未導入（予定） |
+| ドラッグ&ドロップ | @dnd-kit/core | 未導入（予定） |
+| バックエンド | Spring Boot (Java) | Spring Boot 4.0 / Java 25 |
+| データベース | PostgreSQL | 16 |
+| ORM | Spring Data JPA (Hibernate) | Spring Boot 4.0 同梱 |
 
 ---
 
