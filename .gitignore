@@ -10,3 +10,6 @@ build/
 
 # Spring Boot
 *.log
+
+# Claude Code (personal settings)
+.claude/settings.local.json

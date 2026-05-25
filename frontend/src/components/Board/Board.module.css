@@ -1,0 +1,23 @@
+.board {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 16px 20px;
+  overflow-x: auto;
+  flex: 1;
+}
+
+.loading,
+.error {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  font-size: 16px;
+  color: rgba(255, 255, 255, 0.85);
+  padding: 40px;
+}
+
+.error {
+  color: #ffd2d2;
+}
