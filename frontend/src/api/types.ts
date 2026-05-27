@@ -20,3 +20,14 @@ export interface CardResponse {
 export interface CardWithListResponse extends CardResponse {
   listTitle: string;
 }
+
+export interface CardRequest {
+  listId: number;
+  title: string;
+  description?: string;
+  dueDate?: string;
+}
+
+export interface BoardListRequest {
+  title: string;
+}

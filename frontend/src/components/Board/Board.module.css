@@ -21,3 +21,24 @@
 .error {
   color: #ffd2d2;
 }
+
+.addListBtn {
+  flex-shrink: 0;
+  align-self: flex-start;
+  width: var(--list-width);
+  min-width: var(--list-width);
+  padding: 10px 14px;
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.15s;
+}
+
+.addListBtn:hover {
+  background: rgba(255, 255, 255, 0.3);
+}

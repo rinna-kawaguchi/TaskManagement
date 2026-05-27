@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
-import type { BoardListResponse, CardResponse, CardWithListResponse } from './api/types';
-import { fetchLists, fetchCardsByListId, searchCards } from './api/client';
+import type { BoardListResponse, CardRequest, CardResponse, CardWithListResponse } from './api/types';
+import { fetchLists, fetchCardsByListId, searchCards, createCard, createList } from './api/client';
 import { useDebounce } from './hooks/useDebounce';
 import { Header } from './components/Header/Header';
 import { Board } from './components/Board/Board';
@@ -62,6 +62,29 @@ function App() {
     setSelectedCard(null);
   }, []);
 
+  const handleAddList = useCallback(async (title: string) => {
+    const newList = await createList({ title });
+    setLists((prev) => [...prev, newList]);
+    setCardsMap((prev) => ({ ...prev, [newList.id]: [] }));
+  }, []);
+
+  const handleAddCard = useCallback(
+    async (listId: number, title: string, description: string, dueDate: string) => {
+      const request: CardRequest = {
+        listId,
+        title,
+        ...(description && { description }),
+        ...(dueDate && { dueDate }),
+      };
+      const newCard = await createCard(request);
+      setCardsMap((prev) => ({
+        ...prev,
+        [listId]: [...(prev[listId] ?? []), newCard],
+      }));
+    },
+    [],
+  );
+
   const isSearching = searchQuery.trim().length > 0;
 
   return (
@@ -80,6 +103,8 @@ function App() {
           loading={loading}
           error={error}
           onCardClick={handleCardClick}
+          onAddCard={handleAddCard}
+          onAddList={handleAddList}
         />
       )}
       <CardModal card={selectedCard} onClose={handleModalClose} />
