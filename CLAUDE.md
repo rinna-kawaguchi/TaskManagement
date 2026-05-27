@@ -23,6 +23,10 @@ docker compose up -d db
 
 バックエンド起動前にPostgreSQLコンテナが起動している必要がある。
 
+## ドキュメント
+
+機能追加・変更の際は `docs/requirements.md` を参照し、実装後に内容が古くなっていれば更新すること。
+
 ## Git運用ルール
 
 CONTRIBUTING.md に従い、以下を必ず守ること。

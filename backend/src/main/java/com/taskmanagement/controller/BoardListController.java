@@ -1,9 +1,12 @@
 package com.taskmanagement.controller;
 
+import com.taskmanagement.dto.BoardListRequest;
 import com.taskmanagement.dto.BoardListResponse;
 import com.taskmanagement.dto.CardResponse;
 import com.taskmanagement.service.BoardListService;
 import com.taskmanagement.service.CardService;
+import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -33,5 +36,10 @@ public class BoardListController {
     @GetMapping("/{id}/cards")
     public ResponseEntity<List<CardResponse>> getCardsByListId(@PathVariable Long id) {
         return ResponseEntity.ok(cardService.getCardsByListId(id));
+    }
+
+    @PostMapping
+    public ResponseEntity<BoardListResponse> createList(@Valid @RequestBody BoardListRequest request) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(boardListService.createList(request));
     }
 }

@@ -37,3 +37,22 @@
   padding: 0 8px 8px;
   overflow-y: auto;
 }
+
+.addBtn {
+  margin: 0 8px 8px;
+  padding: 6px 10px;
+  background: none;
+  border: none;
+  border-radius: 6px;
+  font-size: 13px;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.15s, color 0.15s;
+  flex-shrink: 0;
+}
+
+.addBtn:hover {
+  background: rgba(0, 0, 0, 0.08);
+  color: var(--color-text-dark);
+}
