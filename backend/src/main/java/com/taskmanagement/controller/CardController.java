@@ -1,8 +1,11 @@
 package com.taskmanagement.controller;
 
+import com.taskmanagement.dto.CardRequest;
 import com.taskmanagement.dto.CardResponse;
 import com.taskmanagement.dto.CardWithListResponse;
 import com.taskmanagement.service.CardService;
+import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -26,5 +29,10 @@ public class CardController {
     public ResponseEntity<List<CardWithListResponse>> searchCards(
             @RequestParam(required = false, defaultValue = "") String keyword) {
         return ResponseEntity.ok(cardService.searchCards(keyword));
+    }
+
+    @PostMapping
+    public ResponseEntity<CardResponse> createCard(@Valid @RequestBody CardRequest request) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(cardService.createCard(request));
     }
 }

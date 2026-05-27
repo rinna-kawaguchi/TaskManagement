@@ -1,6 +1,8 @@
 package com.taskmanagement.service;
 
+import com.taskmanagement.dto.BoardListRequest;
 import com.taskmanagement.dto.BoardListResponse;
+import com.taskmanagement.entity.BoardList;
 import com.taskmanagement.repository.BoardListRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -29,5 +31,17 @@ public class BoardListService {
         return boardListRepository.findById(id)
                 .map(BoardListResponse::new)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "リストが見つかりません: " + id));
+    }
+
+    @Transactional
+    public BoardListResponse createList(BoardListRequest request) {
+        List<BoardList> existing = boardListRepository.findAllByOrderByPositionAsc();
+        int nextPosition = existing.isEmpty() ? 1 : existing.get(existing.size() - 1).getPosition() + 1;
+
+        BoardList boardList = new BoardList();
+        boardList.setTitle(request.getTitle());
+        boardList.setPosition(nextPosition);
+
+        return new BoardListResponse(boardListRepository.save(boardList));
     }
 }
