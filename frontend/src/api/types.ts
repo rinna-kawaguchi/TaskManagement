@@ -31,3 +31,9 @@ export interface CardRequest {
 export interface BoardListRequest {
   title: string;
 }
+
+export interface CardUpdateRequest {
+  title: string;
+  description?: string;
+  dueDate?: string | null;
+}

@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import type { BoardListResponse, CardRequest, CardResponse, CardWithListResponse } from './api/types';
-import { fetchLists, fetchCardsByListId, searchCards, createCard, createList } from './api/client';
+import { fetchLists, fetchCardsByListId, searchCards, createCard, createList, updateList, updateCard } from './api/client';
 import { useDebounce } from './hooks/useDebounce';
 import { Header } from './components/Header/Header';
 import { Board } from './components/Board/Board';
@@ -85,6 +85,21 @@ function App() {
     [],
   );
 
+  const handleUpdateList = useCallback(async (listId: number, title: string) => {
+    const updatedList = await updateList(listId, { title });
+    setLists((prev) => prev.map((l) => (l.id === listId ? updatedList : l)));
+  }, []);
+
+  const handleUpdateCard = useCallback((updatedCard: CardResponse) => {
+    setCardsMap((prev) => ({
+      ...prev,
+      [updatedCard.listId]: (prev[updatedCard.listId] ?? []).map((c) =>
+        c.id === updatedCard.id ? updatedCard : c,
+      ),
+    }));
+    setSelectedCard(updatedCard);
+  }, []);
+
   const isSearching = searchQuery.trim().length > 0;
 
   return (
@@ -105,9 +120,10 @@ function App() {
           onCardClick={handleCardClick}
           onAddCard={handleAddCard}
           onAddList={handleAddList}
+          onUpdateList={handleUpdateList}
         />
       )}
-      <CardModal card={selectedCard} onClose={handleModalClose} />
+      <CardModal card={selectedCard} onClose={handleModalClose} onUpdate={handleUpdateCard} />
     </>
   );
 }

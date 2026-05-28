@@ -20,6 +20,14 @@
   font-size: 14px;
   font-weight: 700;
   color: var(--color-text-dark);
+  cursor: pointer;
+  border-radius: 3px;
+  padding: 2px 4px;
+  margin: -2px -4px;
+}
+
+.title:hover {
+  background: rgba(0, 0, 0, 0.06);
 }
 
 .count {
@@ -55,4 +63,67 @@
 .addBtn:hover {
   background: rgba(0, 0, 0, 0.08);
   color: var(--color-text-dark);
+}
+
+.titleForm {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex: 1;
+  min-width: 0;
+}
+
+.titleInput {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--color-text-dark);
+  border: 1px solid var(--color-primary);
+  border-radius: 3px;
+  padding: 2px 6px;
+  font-family: inherit;
+  flex: 1;
+  min-width: 0;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(29, 123, 212, 0.2);
+}
+
+.titleSaveBtn {
+  background: var(--color-primary);
+  color: #fff;
+  border: none;
+  border-radius: 3px;
+  padding: 3px 8px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.titleSaveBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.titleCancelBtn {
+  background: none;
+  border: none;
+  font-size: 16px;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  padding: 2px 4px;
+  border-radius: 3px;
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+.titleCancelBtn:hover {
+  background: rgba(0, 0, 0, 0.08);
+  color: var(--color-text-dark);
+}
+
+.titleError {
+  font-size: 12px;
+  color: var(--color-overdue);
+  white-space: nowrap;
 }
