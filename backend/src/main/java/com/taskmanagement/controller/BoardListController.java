@@ -42,4 +42,11 @@ public class BoardListController {
     public ResponseEntity<BoardListResponse> createList(@Valid @RequestBody BoardListRequest request) {
         return ResponseEntity.status(HttpStatus.CREATED).body(boardListService.createList(request));
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<BoardListResponse> updateList(
+            @PathVariable Long id,
+            @Valid @RequestBody BoardListRequest request) {
+        return ResponseEntity.ok(boardListService.updateList(id, request));
+    }
 }

@@ -44,4 +44,12 @@ public class BoardListService {
 
         return new BoardListResponse(boardListRepository.save(boardList));
     }
+
+    @Transactional
+    public BoardListResponse updateList(Long id, BoardListRequest request) {
+        BoardList boardList = boardListRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "リストが見つかりません: " + id));
+        boardList.setTitle(request.getTitle());
+        return new BoardListResponse(boardListRepository.save(boardList));
+    }
 }

@@ -1,6 +1,7 @@
 package com.taskmanagement.service;
 
 import com.taskmanagement.dto.CardRequest;
+import com.taskmanagement.dto.CardUpdateRequest;
 import com.taskmanagement.dto.CardResponse;
 import com.taskmanagement.dto.CardWithListResponse;
 import com.taskmanagement.entity.BoardList;
@@ -66,6 +67,16 @@ public class CardService {
         card.setDueDate(request.getDueDate());
         card.setPosition(nextPosition);
 
+        return new CardResponse(cardRepository.save(card));
+    }
+
+    @Transactional
+    public CardResponse updateCard(Long id, CardUpdateRequest request) {
+        Card card = cardRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "カードが見つかりません: " + id));
+        card.setTitle(request.getTitle());
+        card.setDescription(request.getDescription());
+        card.setDueDate(request.getDueDate());
         return new CardResponse(cardRepository.save(card));
     }
 }
