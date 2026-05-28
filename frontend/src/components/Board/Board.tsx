@@ -12,9 +12,10 @@ interface BoardProps {
   onCardClick: (card: CardResponse) => void;
   onAddCard: (listId: number, title: string, description: string, dueDate: string) => Promise<void>;
   onAddList: (title: string) => Promise<void>;
+  onUpdateList: (listId: number, title: string) => Promise<void>;
 }
 
-export function Board({ lists, cardsMap, loading, error, onCardClick, onAddCard, onAddList }: BoardProps) {
+export function Board({ lists, cardsMap, loading, error, onCardClick, onAddCard, onAddList, onUpdateList }: BoardProps) {
   const [isListModalOpen, setIsListModalOpen] = useState(false);
 
   if (loading) return <div className={styles.loading}>読み込み中...</div>;
@@ -34,6 +35,7 @@ export function Board({ lists, cardsMap, loading, error, onCardClick, onAddCard,
           cards={cardsMap[list.id] ?? []}
           onCardClick={onCardClick}
           onAddCard={onAddCard}
+          onUpdateList={onUpdateList}
         />
       ))}
       <button className={styles.addListBtn} onClick={() => setIsListModalOpen(true)}>

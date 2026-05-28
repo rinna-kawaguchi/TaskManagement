@@ -1,4 +1,4 @@
-import type { BoardListRequest, BoardListResponse, CardRequest, CardResponse, CardWithListResponse } from './types';
+import type { BoardListRequest, BoardListResponse, CardRequest, CardResponse, CardUpdateRequest, CardWithListResponse } from './types';
 
 const BASE_URL = '/api';
 
@@ -36,6 +36,22 @@ export function createCard(data: CardRequest): Promise<CardResponse> {
 export function createList(data: BoardListRequest): Promise<BoardListResponse> {
   return request('/lists', {
     method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data),
+  });
+}
+
+export function updateList(listId: number, data: BoardListRequest): Promise<BoardListResponse> {
+  return request(`/lists/${listId}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data),
+  });
+}
+
+export function updateCard(cardId: number, data: CardUpdateRequest): Promise<CardResponse> {
+  return request(`/cards/${cardId}`, {
+    method: 'PUT',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(data),
   });

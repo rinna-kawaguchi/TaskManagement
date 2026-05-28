@@ -82,3 +82,124 @@
   color: var(--color-overdue);
   font-weight: 600;
 }
+
+.editBtnArea {
+  margin-top: 20px;
+}
+
+.editBtn {
+  background: var(--color-primary);
+  color: #fff;
+  border: none;
+  border-radius: 3px;
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.editBtn:hover {
+  background: #1565b8;
+}
+
+.editHeading {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--color-text-dark);
+  margin-bottom: 20px;
+  padding-right: 28px;
+}
+
+.field {
+  margin-bottom: 14px;
+}
+
+.formLabel {
+  display: block;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 6px;
+}
+
+.required {
+  color: var(--color-overdue);
+}
+
+.input,
+.textarea {
+  width: 100%;
+  border: 1px solid #c0c4cc;
+  border-radius: 3px;
+  padding: 8px 10px;
+  font-size: 14px;
+  color: var(--color-text-dark);
+  font-family: inherit;
+  background: #fff;
+  box-sizing: border-box;
+}
+
+.textarea {
+  resize: vertical;
+  line-height: 1.5;
+}
+
+.input:focus,
+.textarea:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 2px rgba(29, 123, 212, 0.2);
+}
+
+.error {
+  font-size: 13px;
+  color: var(--color-overdue);
+  margin-bottom: 12px;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 20px;
+}
+
+.submitBtn {
+  background: var(--color-primary);
+  color: #fff;
+  border: none;
+  border-radius: 3px;
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.submitBtn:hover:not(:disabled) {
+  background: #1565b8;
+}
+
+.submitBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.cancelBtn {
+  background: none;
+  border: none;
+  font-size: 14px;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  padding: 8px 10px;
+  border-radius: 3px;
+  transition: background 0.15s, color 0.15s;
+}
+
+.cancelBtn:hover {
+  background: rgba(0, 0, 0, 0.08);
+  color: var(--color-text-dark);
+}

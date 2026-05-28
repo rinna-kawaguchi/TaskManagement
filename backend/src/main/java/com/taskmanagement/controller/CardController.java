@@ -1,6 +1,7 @@
 package com.taskmanagement.controller;
 
 import com.taskmanagement.dto.CardRequest;
+import com.taskmanagement.dto.CardUpdateRequest;
 import com.taskmanagement.dto.CardResponse;
 import com.taskmanagement.dto.CardWithListResponse;
 import com.taskmanagement.service.CardService;
@@ -34,5 +35,12 @@ public class CardController {
     @PostMapping
     public ResponseEntity<CardResponse> createCard(@Valid @RequestBody CardRequest request) {
         return ResponseEntity.status(HttpStatus.CREATED).body(cardService.createCard(request));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<CardResponse> updateCard(
+            @PathVariable Long id,
+            @Valid @RequestBody CardUpdateRequest request) {
+        return ResponseEntity.ok(cardService.updateCard(id, request));
     }
 }
