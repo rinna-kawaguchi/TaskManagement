@@ -33,7 +33,7 @@ AIエンジニアコースの課題として、Trelloライクなタスク管理
 | フロントエンド | React + TypeScript | React 19 / TypeScript 6 |
 | ビルドツール | Vite | 8.x |
 | スタイリング | Tailwind CSS | 未導入（予定） |
-| ドラッグ&ドロップ | @dnd-kit/core | 未導入（予定） |
+| ドラッグ&ドロップ | @dnd-kit/core + @dnd-kit/sortable + @dnd-kit/utilities | 導入済み |
 | バックエンド | Spring Boot (Java) | Spring Boot 4.0 / Java 25 |
 | データベース | PostgreSQL | 16 |
 | ORM | Spring Data JPA (Hibernate) | Spring Boot 4.0 同梱 |

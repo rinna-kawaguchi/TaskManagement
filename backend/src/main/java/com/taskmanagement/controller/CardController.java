@@ -1,5 +1,6 @@
 package com.taskmanagement.controller;
 
+import com.taskmanagement.dto.CardReorderRequest;
 import com.taskmanagement.dto.CardRequest;
 import com.taskmanagement.dto.CardUpdateRequest;
 import com.taskmanagement.dto.CardResponse;
@@ -42,5 +43,11 @@ public class CardController {
             @PathVariable Long id,
             @Valid @RequestBody CardUpdateRequest request) {
         return ResponseEntity.ok(cardService.updateCard(id, request));
+    }
+
+    @PutMapping("/reorder")
+    public ResponseEntity<Void> reorderCards(@Valid @RequestBody CardReorderRequest request) {
+        cardService.reorderCards(request);
+        return ResponseEntity.noContent().build();
     }
 }

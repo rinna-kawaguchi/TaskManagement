@@ -2,6 +2,8 @@ package com.taskmanagement.service;
 
 import com.taskmanagement.dto.BoardListRequest;
 import com.taskmanagement.dto.BoardListResponse;
+import com.taskmanagement.dto.ListReorderRequest;
+import com.taskmanagement.dto.ReorderItem;
 import com.taskmanagement.entity.BoardList;
 import com.taskmanagement.repository.BoardListRepository;
 import org.springframework.http.HttpStatus;
@@ -51,5 +53,15 @@ public class BoardListService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "リストが見つかりません: " + id));
         boardList.setTitle(request.getTitle());
         return new BoardListResponse(boardListRepository.save(boardList));
+    }
+
+    @Transactional
+    public void reorderLists(ListReorderRequest request) {
+        for (ReorderItem item : request.getItems()) {
+            BoardList boardList = boardListRepository.findById(item.getId())
+                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "リストが見つかりません: " + item.getId()));
+            boardList.setPosition(item.getPosition());
+            boardListRepository.save(boardList);
+        }
     }
 }

@@ -37,3 +37,22 @@ export interface CardUpdateRequest {
   description?: string;
   dueDate?: string | null;
 }
+
+export interface ListReorderItem {
+  id: number;
+  position: number;
+}
+
+export interface ListReorderRequest {
+  items: ListReorderItem[];
+}
+
+export interface CardReorderItem {
+  id: number;
+  listId: number;
+  position: number;
+}
+
+export interface CardReorderRequest {
+  cards: CardReorderItem[];
+}

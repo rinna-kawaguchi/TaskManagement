@@ -1,6 +1,8 @@
 package com.taskmanagement.service;
 
 import com.taskmanagement.dto.CardRequest;
+import com.taskmanagement.dto.CardReorderItem;
+import com.taskmanagement.dto.CardReorderRequest;
 import com.taskmanagement.dto.CardUpdateRequest;
 import com.taskmanagement.dto.CardResponse;
 import com.taskmanagement.dto.CardWithListResponse;
@@ -78,5 +80,18 @@ public class CardService {
         card.setDescription(request.getDescription());
         card.setDueDate(request.getDueDate());
         return new CardResponse(cardRepository.save(card));
+    }
+
+    @Transactional
+    public void reorderCards(CardReorderRequest request) {
+        for (CardReorderItem item : request.getCards()) {
+            BoardList boardList = boardListRepository.findById(item.getListId())
+                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "リストが見つかりません: " + item.getListId()));
+            Card card = cardRepository.findById(item.getId())
+                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "カードが見つかりません: " + item.getId()));
+            card.setBoardList(boardList);
+            card.setPosition(item.getPosition());
+            cardRepository.save(card);
+        }
     }
 }

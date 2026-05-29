@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import type { BoardListResponse, CardRequest, CardResponse, CardWithListResponse } from './api/types';
-import { fetchLists, fetchCardsByListId, searchCards, createCard, createList, updateList, updateCard } from './api/client';
+import { fetchLists, fetchCardsByListId, searchCards, createCard, createList, updateList } from './api/client';
 import { useDebounce } from './hooks/useDebounce';
 import { Header } from './components/Header/Header';
 import { Board } from './components/Board/Board';
@@ -100,6 +100,17 @@ function App() {
     setSelectedCard(updatedCard);
   }, []);
 
+  const handleListsReorder = useCallback((reorderedLists: BoardListResponse[]) => {
+    setLists(reorderedLists);
+  }, []);
+
+  const handleCardsReorder = useCallback(
+    (updater: (prev: Record<number, CardResponse[]>) => Record<number, CardResponse[]>) => {
+      setCardsMap(updater);
+    },
+    [],
+  );
+
   const isSearching = searchQuery.trim().length > 0;
 
   return (
@@ -121,6 +132,8 @@ function App() {
           onAddCard={handleAddCard}
           onAddList={handleAddList}
           onUpdateList={handleUpdateList}
+          onListsReorder={handleListsReorder}
+          onCardsReorder={handleCardsReorder}
         />
       )}
       <CardModal card={selectedCard} onClose={handleModalClose} onUpdate={handleUpdateCard} />
