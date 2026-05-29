@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useDroppable } from '@dnd-kit/core';
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import type { SyntheticListenerMap } from '@dnd-kit/core/dist/hooks/utilities';
 import type { BoardListResponse, CardResponse } from '../../api/types';
@@ -17,6 +18,12 @@ interface BoardListProps {
 
 export function BoardList({ list, cards, onCardClick, onAddCard, onUpdateList, dragHandleListeners }: BoardListProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  // list-{id} と衝突しない drop-{id} で登録し、空リストでもドロップ領域を確保する
+  const { setNodeRef: setDropRef } = useDroppable({
+    id: `drop-${list.id}`,
+    data: { type: 'list', listId: list.id },
+  });
   const [isTitleEditing, setIsTitleEditing] = useState(false);
   const [editTitle, setEditTitle] = useState(list.title);
   const [titleError, setTitleError] = useState<string | null>(null);
@@ -78,7 +85,7 @@ export function BoardList({ list, cards, onCardClick, onAddCard, onUpdateList, d
           </>
         )}
       </div>
-      <div className={styles.cards}>
+      <div className={styles.cards} ref={setDropRef}>
         <SortableContext items={cards.map((c) => `card-${c.id}`)} strategy={verticalListSortingStrategy}>
           {cards.map((card) => (
             <SortableCard key={card.id} card={card} onClick={onCardClick} />

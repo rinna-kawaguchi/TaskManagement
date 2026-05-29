@@ -20,7 +20,7 @@ export function SortableListItem({ list, cards, onCardClick, onAddCard, onUpdate
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
-    opacity: isDragging ? 0.4 : 1,
+    ...(isDragging ? { height: 0, overflow: 'hidden' } : {}),
   };
 
   return (
