@@ -3,6 +3,7 @@ package com.taskmanagement.controller;
 import com.taskmanagement.dto.BoardListRequest;
 import com.taskmanagement.dto.BoardListResponse;
 import com.taskmanagement.dto.CardResponse;
+import com.taskmanagement.dto.ListReorderRequest;
 import com.taskmanagement.service.BoardListService;
 import com.taskmanagement.service.CardService;
 import jakarta.validation.Valid;
@@ -48,5 +49,11 @@ public class BoardListController {
             @PathVariable Long id,
             @Valid @RequestBody BoardListRequest request) {
         return ResponseEntity.ok(boardListService.updateList(id, request));
+    }
+
+    @PutMapping("/reorder")
+    public ResponseEntity<Void> reorderLists(@Valid @RequestBody ListReorderRequest request) {
+        boardListService.reorderLists(request);
+        return ResponseEntity.noContent().build();
     }
 }
