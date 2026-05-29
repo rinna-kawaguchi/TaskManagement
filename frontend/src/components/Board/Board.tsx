@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef } from 'react';
 import {
   DndContext,
   DragOverlay,
@@ -38,11 +38,12 @@ interface BoardProps {
   onCardsReorder: (updater: (prev: Record<number, CardResponse[]>) => Record<number, CardResponse[]>) => void;
 }
 
-// "card-5" → 5、"list-2" → 2 にパース
+// "card-5" → {type:'card', id:5}、"list-2" / "drop-2" → {type:'list', id:2}
 function parseId(dndId: string | number): { type: 'card' | 'list'; id: number } | null {
   const s = String(dndId);
   if (s.startsWith('card-')) return { type: 'card', id: Number(s.slice(5)) };
   if (s.startsWith('list-')) return { type: 'list', id: Number(s.slice(5)) };
+  if (s.startsWith('drop-')) return { type: 'list', id: Number(s.slice(5)) };
   return null;
 }
 
@@ -61,11 +62,12 @@ export function Board({
   const [isListModalOpen, setIsListModalOpen] = useState(false);
   const [activeListId, setActiveListId] = useState<number | null>(null);
   const [activeCardId, setActiveCardId] = useState<number | null>(null);
+  // ドラッグ開始時のカードの元リストIDを記録（handleDragOver の楽観的更新後も参照できるように）
+  const dragOriginListIdRef = useRef<number | null>(null);
 
+  // useEffect を使わず render のたびに直接同期させる（handleDragEnd が同一ティックで参照するため）
   const cardsMapRef = useRef(cardsMap);
-  useEffect(() => {
-    cardsMapRef.current = cardsMap;
-  }, [cardsMap]);
+  cardsMapRef.current = cardsMap;
 
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 8 } }),
@@ -83,8 +85,17 @@ export function Board({
   function handleDragStart(event: DragStartEvent) {
     const parsed = parseId(event.active.id);
     if (!parsed) return;
-    if (parsed.type === 'list') setActiveListId(parsed.id);
-    if (parsed.type === 'card') setActiveCardId(parsed.id);
+    if (parsed.type === 'list') {
+      setActiveListId(parsed.id);
+    }
+    if (parsed.type === 'card') {
+      setActiveCardId(parsed.id);
+      // 楽観的更新で変わる前の元リストIDをここで記録する
+      const originListId = Object.keys(cardsMapRef.current).map(Number).find(
+        (lid) => cardsMapRef.current[lid]?.some((c) => c.id === parsed.id),
+      );
+      dragOriginListIdRef.current = originListId ?? null;
+    }
   }
 
   function handleDragOver(event: DragOverEvent) {
@@ -150,8 +161,16 @@ export function Board({
     if (active.id === over.id) return;
 
     if (activeParsed.type === 'list') {
+      // over がカードの場合、そのカードが属するリストを代わりに使う
+      const overListId = overParsed.type === 'list'
+        ? overParsed.id
+        : Object.keys(cardsMapRef.current).map(Number).find(
+            (lid) => cardsMapRef.current[lid]?.some((c) => c.id === overParsed.id),
+          );
+      if (overListId === undefined) return;
+
       const oldIndex = lists.findIndex((l) => l.id === activeParsed.id);
-      const newIndex = lists.findIndex((l) => l.id === overParsed.id);
+      const newIndex = lists.findIndex((l) => l.id === overListId);
       if (oldIndex === -1 || newIndex === -1 || oldIndex === newIndex) return;
 
       const snapshot = lists;
@@ -166,16 +185,16 @@ export function Board({
     if (activeParsed.type === 'card') {
       const currentCardsMap = cardsMapRef.current;
       const activeCardId = activeParsed.id;
-
-      const fromListId = Object.keys(currentCardsMap).map(Number).find(
-        (lid) => currentCardsMap[lid]?.some((c) => c.id === activeCardId),
-      );
-      if (fromListId === undefined) return;
+      // handleDragStart で記録した元リストID（handleDragOver の楽観的更新前の位置）
+      const originListId = dragOriginListIdRef.current;
+      dragOriginListIdRef.current = null;
+      if (originListId === null) return;
 
       let toListId: number;
       if (overParsed.type === 'list') {
         toListId = overParsed.id;
       } else {
+        // over がカードの場合、そのカードが現在いるリストを探す
         const found = Object.keys(currentCardsMap).map(Number).find(
           (lid) => currentCardsMap[lid]?.some((c) => c.id === overParsed.id),
         );
@@ -183,31 +202,33 @@ export function Board({
         toListId = found;
       }
 
-      if (fromListId === toListId) {
-        // 同リスト内の並び替え
-        const listCards = currentCardsMap[fromListId] ?? [];
+      if (originListId === toListId) {
+        // 同リスト内の並び替え（handleDragOver は発火しないので currentCardsMap から取得）
+        const listCards = currentCardsMap[originListId] ?? [];
         const oldIdx = listCards.findIndex((c) => c.id === activeCardId);
         const newIdx = listCards.findIndex((c) => c.id === overParsed.id);
         if (oldIdx === -1 || newIdx === -1 || oldIdx === newIdx) return;
 
         const snapshot = currentCardsMap;
         const reordered = arrayMove(listCards, oldIdx, newIdx);
-        onCardsReorder((prev) => ({ ...prev, [fromListId]: reordered }));
+        onCardsReorder((prev) => ({ ...prev, [originListId]: reordered }));
 
         reorderCards({
-          cards: reordered.map((c, i) => ({ id: c.id, listId: fromListId, position: i + 1 })),
+          cards: reordered.map((c, i) => ({ id: c.id, listId: originListId, position: i + 1 })),
         }).catch(() => { onCardsReorder(() => snapshot); });
       } else {
-        // リスト間移動: handleDragOver で optimistic 更新済み → API 保存のみ
-        const snapshot = currentCardsMap;
-        const affectedListIds = new Set([fromListId, toListId]);
-        const cards: CardReorderItem[] = [];
-        affectedListIds.forEach((listId) => {
-          (currentCardsMap[listId] ?? []).forEach((c, i) => {
-            cards.push({ id: c.id, listId, position: i + 1 });
+        // リスト間移動: handleDragOver の楽観的更新後の最新 state で API ペイロードを組み立てる
+        onCardsReorder((prev) => {
+          const affectedListIds = new Set([originListId, toListId]);
+          const cards: CardReorderItem[] = [];
+          affectedListIds.forEach((listId) => {
+            (prev[listId] ?? []).forEach((c, i) => {
+              cards.push({ id: c.id, listId, position: i + 1 });
+            });
           });
+          reorderCards({ cards }).catch(() => { onCardsReorder(() => prev); });
+          return prev;
         });
-        reorderCards({ cards }).catch(() => { onCardsReorder(() => snapshot); });
       }
     }
   }
