@@ -1,6 +1,8 @@
 import { useState } from 'react';
+import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
+import type { SyntheticListenerMap } from '@dnd-kit/core/dist/hooks/utilities';
 import type { BoardListResponse, CardResponse } from '../../api/types';
-import { Card } from '../Card/Card';
+import { SortableCard } from '../Card/SortableCard';
 import { AddCardForm } from '../AddCardForm/AddCardForm';
 import styles from './BoardList.module.css';
 
@@ -10,9 +12,10 @@ interface BoardListProps {
   onCardClick: (card: CardResponse) => void;
   onAddCard: (listId: number, title: string, description: string, dueDate: string) => Promise<void>;
   onUpdateList: (listId: number, title: string) => Promise<void>;
+  dragHandleListeners?: SyntheticListenerMap;
 }
 
-export function BoardList({ list, cards, onCardClick, onAddCard, onUpdateList }: BoardListProps) {
+export function BoardList({ list, cards, onCardClick, onAddCard, onUpdateList, dragHandleListeners }: BoardListProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isTitleEditing, setIsTitleEditing] = useState(false);
   const [editTitle, setEditTitle] = useState(list.title);
@@ -43,9 +46,11 @@ export function BoardList({ list, cards, onCardClick, onAddCard, onUpdateList }:
 
   return (
     <div className={styles.list}>
-      <div className={styles.header}>
+      {/* dragHandleListeners をヘッダーのみに付けることで、カード上のドラッグと分離する */}
+      <div className={styles.header} {...dragHandleListeners}>
         {isTitleEditing ? (
-          <form onSubmit={handleTitleSubmit} className={styles.titleForm}>
+          <form onSubmit={handleTitleSubmit} className={styles.titleForm}
+            onPointerDown={(e) => e.stopPropagation()}>
             <input
               className={styles.titleInput}
               value={editTitle}
@@ -74,9 +79,11 @@ export function BoardList({ list, cards, onCardClick, onAddCard, onUpdateList }:
         )}
       </div>
       <div className={styles.cards}>
-        {cards.map((card) => (
-          <Card key={card.id} card={card} onClick={onCardClick} />
-        ))}
+        <SortableContext items={cards.map((c) => `card-${c.id}`)} strategy={verticalListSortingStrategy}>
+          {cards.map((card) => (
+            <SortableCard key={card.id} card={card} onClick={onCardClick} />
+          ))}
+        </SortableContext>
       </div>
       <button className={styles.addBtn} onClick={() => setIsModalOpen(true)}>
         + カードを追加

@@ -14,6 +14,11 @@
   justify-content: space-between;
   padding: 10px 12px 8px;
   flex-shrink: 0;
+  cursor: grab;
+}
+
+.header:active {
+  cursor: grabbing;
 }
 
 .title {
