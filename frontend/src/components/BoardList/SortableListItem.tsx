@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { BoardList } from './BoardList';
@@ -12,9 +13,12 @@ interface SortableListItemProps {
 }
 
 export function SortableListItem({ list, cards, onCardClick, onAddCard, onUpdateList }: SortableListItemProps) {
+  const [isTitleEditing, setIsTitleEditing] = useState(false);
+
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
     id: `list-${list.id}`,
     data: { type: 'list', listId: list.id },
+    disabled: isTitleEditing,
   });
 
   const style = {
@@ -32,6 +36,8 @@ export function SortableListItem({ list, cards, onCardClick, onAddCard, onUpdate
         onAddCard={onAddCard}
         onUpdateList={onUpdateList}
         dragHandleListeners={listeners}
+        isTitleEditing={isTitleEditing}
+        onTitleEditingChange={setIsTitleEditing}
       />
     </div>
   );

@@ -14,9 +14,11 @@ interface BoardListProps {
   onAddCard: (listId: number, title: string, description: string, dueDate: string) => Promise<void>;
   onUpdateList: (listId: number, title: string) => Promise<void>;
   dragHandleListeners?: SyntheticListenerMap;
+  isTitleEditing?: boolean;
+  onTitleEditingChange?: (editing: boolean) => void;
 }
 
-export function BoardList({ list, cards, onCardClick, onAddCard, onUpdateList, dragHandleListeners }: BoardListProps) {
+export function BoardList({ list, cards, onCardClick, onAddCard, onUpdateList, dragHandleListeners, isTitleEditing: isTitleEditingProp, onTitleEditingChange }: BoardListProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   // list-{id} と衝突しない drop-{id} で登録し、空リストでもドロップ領域を確保する
@@ -24,7 +26,14 @@ export function BoardList({ list, cards, onCardClick, onAddCard, onUpdateList, d
     id: `drop-${list.id}`,
     data: { type: 'list', listId: list.id },
   });
-  const [isTitleEditing, setIsTitleEditing] = useState(false);
+
+  const [isTitleEditingLocal, setIsTitleEditingLocal] = useState(false);
+  const isTitleEditing = isTitleEditingProp ?? isTitleEditingLocal;
+  const setIsTitleEditing = (v: boolean) => {
+    setIsTitleEditingLocal(v);
+    onTitleEditingChange?.(v);
+  };
+
   const [editTitle, setEditTitle] = useState(list.title);
   const [titleError, setTitleError] = useState<string | null>(null);
 
@@ -73,11 +82,12 @@ export function BoardList({ list, cards, onCardClick, onAddCard, onUpdateList, d
           <>
             <span
               className={styles.title}
-              onClick={() => setIsTitleEditing(true)}
+              onClick={() => { setEditTitle(list.title); setIsTitleEditing(true); }}
               title="クリックして編集"
               role="button"
               tabIndex={0}
-              onKeyDown={(e) => { if (e.key === 'Enter') setIsTitleEditing(true); }}
+              onPointerDown={(e) => e.stopPropagation()}
+              onKeyDown={(e) => { if (e.key === 'Enter') { setEditTitle(list.title); setIsTitleEditing(true); } }}
             >
               {list.title}
             </span>
