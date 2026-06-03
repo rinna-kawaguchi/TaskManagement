@@ -6,6 +6,7 @@ import com.taskmanagement.dto.ListReorderRequest;
 import com.taskmanagement.dto.ReorderItem;
 import com.taskmanagement.entity.BoardList;
 import com.taskmanagement.repository.BoardListRepository;
+import com.taskmanagement.repository.CardRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,9 +17,11 @@ import java.util.List;
 public class BoardListService {
 
     private final BoardListRepository boardListRepository;
+    private final CardRepository cardRepository;
 
-    public BoardListService(BoardListRepository boardListRepository) {
+    public BoardListService(BoardListRepository boardListRepository, CardRepository cardRepository) {
         this.boardListRepository = boardListRepository;
+        this.cardRepository = cardRepository;
     }
 
     @Transactional(readOnly = true)
@@ -53,6 +56,14 @@ public class BoardListService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "リストが見つかりません: " + id));
         boardList.setTitle(request.getTitle());
         return new BoardListResponse(boardListRepository.save(boardList));
+    }
+
+    @Transactional
+    public void deleteList(Long id) {
+        BoardList boardList = boardListRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "リストが見つかりません: " + id));
+        cardRepository.deleteByBoardListId(id);
+        boardListRepository.delete(boardList);
     }
 
     @Transactional

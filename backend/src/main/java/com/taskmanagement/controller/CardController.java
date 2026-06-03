@@ -50,4 +50,10 @@ public class CardController {
         cardService.reorderCards(request);
         return ResponseEntity.noContent().build();
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteCard(@PathVariable Long id) {
+        cardService.deleteCard(id);
+        return ResponseEntity.noContent().build();
+    }
 }

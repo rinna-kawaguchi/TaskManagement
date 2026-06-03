@@ -83,6 +83,13 @@ public class CardService {
     }
 
     @Transactional
+    public void deleteCard(Long id) {
+        Card card = cardRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "カードが見つかりません: " + id));
+        cardRepository.delete(card);
+    }
+
+    @Transactional
     public void reorderCards(CardReorderRequest request) {
         for (CardReorderItem item : request.getCards()) {
             BoardList boardList = boardListRepository.findById(item.getListId())
