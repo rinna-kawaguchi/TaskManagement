@@ -22,6 +22,9 @@ export function CardModal({ card, onClose, onUpdate, onDelete }: CardModalProps)
   const [error, setError] = useState<string | null>(null);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
+  // card が切り替わったときにフォームを初期化する（props → state の同期）。
+  // より厳密にするには親から <CardModal key={card.id} /> を渡して再マウントさせる方法がある。
+  /* eslint-disable react-hooks/set-state-in-effect */
   useEffect(() => {
     if (card) {
       setTitle(card.title);
@@ -31,6 +34,7 @@ export function CardModal({ card, onClose, onUpdate, onDelete }: CardModalProps)
       setError(null);
     }
   }, [card]);
+  /* eslint-enable react-hooks/set-state-in-effect */
 
   useEffect(() => {
     if (!card) return;
