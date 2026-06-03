@@ -132,3 +132,20 @@
   color: var(--color-overdue);
   white-space: nowrap;
 }
+
+.deleteBtn {
+  background: none;
+  border: none;
+  font-size: 14px;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  padding: 2px 5px;
+  border-radius: 3px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.deleteBtn:hover {
+  background: rgba(192, 57, 43, 0.12);
+  color: var(--color-overdue);
+}
