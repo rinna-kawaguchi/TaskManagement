@@ -19,9 +19,23 @@ public class BoardListResponse {
         this.updatedAt = boardList.getUpdatedAt();
     }
 
-    public Long getId() { return id; }
-    public String getTitle() { return title; }
-    public Integer getPosition() { return position; }
-    public LocalDateTime getCreatedAt() { return createdAt; }
-    public LocalDateTime getUpdatedAt() { return updatedAt; }
+    public Long getId() {
+        return id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public Integer getPosition() {
+        return position;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
 }

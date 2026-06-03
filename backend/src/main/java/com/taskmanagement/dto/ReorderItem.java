@@ -12,9 +12,19 @@ public class ReorderItem {
     @Min(1)
     private Integer position;
 
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    public Long getId() {
+        return id;
+    }
 
-    public Integer getPosition() { return position; }
-    public void setPosition(Integer position) { this.position = position; }
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Integer getPosition() {
+        return position;
+    }
+
+    public void setPosition(Integer position) {
+        this.position = position;
+    }
 }

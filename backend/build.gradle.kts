@@ -1,5 +1,6 @@
 plugins {
     java
+    checkstyle
     id("org.springframework.boot") version "4.0.6"
     id("io.spring.dependency-management") version "1.1.7"
 }
@@ -11,6 +12,12 @@ java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(25)
     }
+}
+
+checkstyle {
+    toolVersion = "10.21.4"
+    configFile = file("config/checkstyle/google_checks.xml")
+    isIgnoreFailures = true
 }
 
 repositories {

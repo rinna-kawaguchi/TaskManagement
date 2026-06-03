@@ -28,13 +28,39 @@ public class CardWithListResponse {
         this.updatedAt = card.getUpdatedAt();
     }
 
-    public Long getId() { return id; }
-    public Long getListId() { return listId; }
-    public String getListTitle() { return listTitle; }
-    public String getTitle() { return title; }
-    public String getDescription() { return description; }
-    public LocalDate getDueDate() { return dueDate; }
-    public Integer getPosition() { return position; }
-    public LocalDateTime getCreatedAt() { return createdAt; }
-    public LocalDateTime getUpdatedAt() { return updatedAt; }
+    public Long getId() {
+        return id;
+    }
+
+    public Long getListId() {
+        return listId;
+    }
+
+    public String getListTitle() {
+        return listTitle;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public LocalDate getDueDate() {
+        return dueDate;
+    }
+
+    public Integer getPosition() {
+        return position;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
 }
