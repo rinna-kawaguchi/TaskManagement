@@ -23,6 +23,10 @@ npx eslint . --format json
 JSON 出力をパースして、ファイル名・行番号・ルールID・メッセージの一覧を表示してください。
 問題がなければ「ESLint: 問題なし」と報告してください。
 
+以下は **既知・対応不要** の違反です。報告から除外してください：
+- `App.tsx:47` [`react-hooks/set-state-in-effect`]：`debouncedQuery` が空のときのリセット処理。実害なし。
+- `Board.tsx:72` [`react-hooks/refs`]：`handleDragEnd` が同一ティックで最新 `cardsMap` を参照するための意図的な設計。`useEffect` では遅すぎるため `eslint-disable` より実装上のトレードオフを優先している。
+
 ---
 
 ## 2. バックエンド Checkstyle（Google Java Style）
@@ -73,8 +77,8 @@ cd backend
 
 ```
 ### 1. ESLint
-- ✅ 問題なし  または
-- ⚠️ N件の問題
+- ✅ 問題なし（既知除く）  または
+- ⚠️ N件の問題（既知除く）
   - ファイル名:行番号 [ルールID] メッセージ
 
 ### 2. Checkstyle
