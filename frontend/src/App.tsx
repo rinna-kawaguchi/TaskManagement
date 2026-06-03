@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import type { BoardListResponse, CardRequest, CardResponse, CardWithListResponse } from './api/types';
-import { fetchLists, fetchCardsByListId, searchCards, createCard, createList, updateList } from './api/client';
+import { fetchLists, fetchCardsByListId, searchCards, createCard, createList, updateList, deleteList, deleteCard } from './api/client';
 import { useDebounce } from './hooks/useDebounce';
 import { Header } from './components/Header/Header';
 import { Board } from './components/Board/Board';
@@ -100,6 +100,24 @@ function App() {
     setSelectedCard(updatedCard);
   }, []);
 
+  const handleDeleteList = useCallback(async (listId: number) => {
+    await deleteList(listId);
+    setLists((prev) => prev.filter((l) => l.id !== listId));
+    setCardsMap((prev) => {
+      const next = { ...prev };
+      delete next[listId];
+      return next;
+    });
+  }, []);
+
+  const handleDeleteCard = useCallback(async (cardId: number, listId: number) => {
+    await deleteCard(cardId);
+    setCardsMap((prev) => ({
+      ...prev,
+      [listId]: (prev[listId] ?? []).filter((c) => c.id !== cardId),
+    }));
+  }, []);
+
   const handleListsReorder = useCallback((reorderedLists: BoardListResponse[]) => {
     setLists(reorderedLists);
   }, []);
@@ -132,11 +150,12 @@ function App() {
           onAddCard={handleAddCard}
           onAddList={handleAddList}
           onUpdateList={handleUpdateList}
+          onDeleteList={handleDeleteList}
           onListsReorder={handleListsReorder}
           onCardsReorder={handleCardsReorder}
         />
       )}
-      <CardModal card={selectedCard} onClose={handleModalClose} onUpdate={handleUpdateCard} />
+      <CardModal card={selectedCard} onClose={handleModalClose} onUpdate={handleUpdateCard} onDelete={handleDeleteCard} />
     </>
   );
 }

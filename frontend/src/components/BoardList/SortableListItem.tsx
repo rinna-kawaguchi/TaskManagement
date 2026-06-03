@@ -10,9 +10,10 @@ interface SortableListItemProps {
   onCardClick: (card: CardResponse) => void;
   onAddCard: (listId: number, title: string, description: string, dueDate: string) => Promise<void>;
   onUpdateList: (listId: number, title: string) => Promise<void>;
+  onDeleteList: (listId: number) => Promise<void>;
 }
 
-export function SortableListItem({ list, cards, onCardClick, onAddCard, onUpdateList }: SortableListItemProps) {
+export function SortableListItem({ list, cards, onCardClick, onAddCard, onUpdateList, onDeleteList }: SortableListItemProps) {
   const [isTitleEditing, setIsTitleEditing] = useState(false);
 
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
@@ -35,6 +36,7 @@ export function SortableListItem({ list, cards, onCardClick, onAddCard, onUpdate
         onCardClick={onCardClick}
         onAddCard={onAddCard}
         onUpdateList={onUpdateList}
+        onDeleteList={onDeleteList}
         dragHandleListeners={listeners}
         isTitleEditing={isTitleEditing}
         onTitleEditingChange={setIsTitleEditing}
