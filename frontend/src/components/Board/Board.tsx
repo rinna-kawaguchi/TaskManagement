@@ -208,7 +208,10 @@ export function Board({
         // 同リスト内の並び替え（handleDragOver は発火しないので currentCardsMap から取得）
         const listCards = currentCardsMap[originListId] ?? [];
         const oldIdx = listCards.findIndex((c) => c.id === activeCardId);
-        const newIdx = listCards.findIndex((c) => c.id === overParsed.id);
+        // over がリストのドロップゾーン（drop-{id}）の場合は末尾扱い
+        const newIdx = overParsed.type === 'list'
+          ? listCards.length - 1
+          : listCards.findIndex((c) => c.id === overParsed.id);
         if (oldIdx === -1 || newIdx === -1 || oldIdx === newIdx) return;
 
         const snapshot = currentCardsMap;

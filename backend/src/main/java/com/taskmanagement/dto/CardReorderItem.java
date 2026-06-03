@@ -15,12 +15,27 @@ public class CardReorderItem {
     @Min(1)
     private Integer position;
 
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    public Long getId() {
+        return id;
+    }
 
-    public Long getListId() { return listId; }
-    public void setListId(Long listId) { this.listId = listId; }
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-    public Integer getPosition() { return position; }
-    public void setPosition(Integer position) { this.position = position; }
+    public Long getListId() {
+        return listId;
+    }
+
+    public void setListId(Long listId) {
+        this.listId = listId;
+    }
+
+    public Integer getPosition() {
+        return position;
+    }
+
+    public void setPosition(Integer position) {
+        this.position = position;
+    }
 }
