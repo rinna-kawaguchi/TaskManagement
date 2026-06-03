@@ -3,21 +3,24 @@ import { createPortal } from 'react-dom';
 import type { CardResponse } from '../../api/types';
 import { updateCard } from '../../api/client';
 import { formatDueDate, isOverdue } from '../../utils/date';
+import { ConfirmModal } from '../ConfirmModal/ConfirmModal';
 import styles from './CardModal.module.css';
 
 interface CardModalProps {
   card: CardResponse | null;
   onClose: () => void;
   onUpdate: (updatedCard: CardResponse) => void;
+  onDelete: (cardId: number, listId: number) => Promise<void>;
 }
 
-export function CardModal({ card, onClose, onUpdate }: CardModalProps) {
+export function CardModal({ card, onClose, onUpdate, onDelete }: CardModalProps) {
   const [isEditing, setIsEditing] = useState(false);
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [dueDate, setDueDate] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
   useEffect(() => {
     if (card) {
@@ -162,7 +165,20 @@ export function CardModal({ card, onClose, onUpdate }: CardModalProps) {
               <button className={styles.editBtn} onClick={() => setIsEditing(true)}>
                 編集
               </button>
+              <button className={styles.deleteBtn} onClick={() => setShowDeleteConfirm(true)}>
+                削除
+              </button>
             </div>
+            {showDeleteConfirm && (
+              <ConfirmModal
+                message={`「${card.title}」を削除しますか？`}
+                onConfirm={async () => {
+                  await onDelete(card.id, card.listId);
+                  onClose();
+                }}
+                onCancel={() => setShowDeleteConfirm(false)}
+              />
+            )}
           </>
         )}
       </div>

@@ -34,6 +34,7 @@ interface BoardProps {
   onAddCard: (listId: number, title: string, description: string, dueDate: string) => Promise<void>;
   onAddList: (title: string) => Promise<void>;
   onUpdateList: (listId: number, title: string) => Promise<void>;
+  onDeleteList: (listId: number) => Promise<void>;
   onListsReorder: (reorderedLists: BoardListResponse[]) => void;
   onCardsReorder: (updater: (prev: Record<number, CardResponse[]>) => Record<number, CardResponse[]>) => void;
 }
@@ -56,6 +57,7 @@ export function Board({
   onAddCard,
   onAddList,
   onUpdateList,
+  onDeleteList,
   onListsReorder,
   onCardsReorder,
 }: BoardProps) {
@@ -259,6 +261,7 @@ export function Board({
               onCardClick={onCardClick}
               onAddCard={onAddCard}
               onUpdateList={onUpdateList}
+              onDeleteList={onDeleteList}
             />
           ))}
         </SortableContext>

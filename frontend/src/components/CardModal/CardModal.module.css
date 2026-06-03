@@ -85,6 +85,9 @@
 
 .editBtnArea {
   margin-top: 20px;
+  display: flex;
+  gap: 8px;
+  align-items: center;
 }
 
 .editBtn {
@@ -101,6 +104,23 @@
 
 .editBtn:hover {
   background: #1565b8;
+}
+
+.deleteBtn {
+  background: none;
+  border: 1px solid var(--color-overdue);
+  color: var(--color-overdue);
+  border-radius: 3px;
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.deleteBtn:hover {
+  background: var(--color-overdue);
+  color: #fff;
 }
 
 .editHeading {

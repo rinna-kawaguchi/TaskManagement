@@ -56,4 +56,10 @@ public class BoardListController {
         boardListService.reorderLists(request);
         return ResponseEntity.noContent().build();
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteList(@PathVariable Long id) {
+        boardListService.deleteList(id);
+        return ResponseEntity.noContent().build();
+    }
 }

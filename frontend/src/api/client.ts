@@ -73,3 +73,11 @@ export function reorderCards(data: CardReorderRequest): Promise<void> {
     body: JSON.stringify(data),
   });
 }
+
+export function deleteList(listId: number): Promise<void> {
+  return request(`/lists/${listId}`, { method: 'DELETE' });
+}
+
+export function deleteCard(cardId: number): Promise<void> {
+  return request(`/cards/${cardId}`, { method: 'DELETE' });
+}

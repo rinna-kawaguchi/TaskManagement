@@ -5,6 +5,7 @@ import type { SyntheticListenerMap } from '@dnd-kit/core/dist/hooks/utilities';
 import type { BoardListResponse, CardResponse } from '../../api/types';
 import { SortableCard } from '../Card/SortableCard';
 import { AddCardForm } from '../AddCardForm/AddCardForm';
+import { ConfirmModal } from '../ConfirmModal/ConfirmModal';
 import styles from './BoardList.module.css';
 
 interface BoardListProps {
@@ -13,13 +14,15 @@ interface BoardListProps {
   onCardClick: (card: CardResponse) => void;
   onAddCard: (listId: number, title: string, description: string, dueDate: string) => Promise<void>;
   onUpdateList: (listId: number, title: string) => Promise<void>;
+  onDeleteList?: (listId: number) => Promise<void>;
   dragHandleListeners?: SyntheticListenerMap;
   isTitleEditing?: boolean;
   onTitleEditingChange?: (editing: boolean) => void;
 }
 
-export function BoardList({ list, cards, onCardClick, onAddCard, onUpdateList, dragHandleListeners, isTitleEditing: isTitleEditingProp, onTitleEditingChange }: BoardListProps) {
+export function BoardList({ list, cards, onCardClick, onAddCard, onUpdateList, onDeleteList, dragHandleListeners, isTitleEditing: isTitleEditingProp, onTitleEditingChange }: BoardListProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
   // list-{id} と衝突しない drop-{id} で登録し、空リストでもドロップ領域を確保する
   const { setNodeRef: setDropRef } = useDroppable({
@@ -92,6 +95,17 @@ export function BoardList({ list, cards, onCardClick, onAddCard, onUpdateList, d
               {list.title}
             </span>
             <span className={styles.count}>{cards.length}</span>
+            {onDeleteList && (
+              <button
+                className={styles.deleteBtn}
+                onClick={() => setShowDeleteConfirm(true)}
+                onPointerDown={(e) => e.stopPropagation()}
+                aria-label="リストを削除"
+                title="リストを削除"
+              >
+                🗑
+              </button>
+            )}
           </>
         )}
       </div>
@@ -110,6 +124,13 @@ export function BoardList({ list, cards, onCardClick, onAddCard, onUpdateList, d
           listTitle={list.title}
           onAdd={handleAdd}
           onClose={() => setIsModalOpen(false)}
+        />
+      )}
+      {showDeleteConfirm && onDeleteList && (
+        <ConfirmModal
+          message={`「${list.title}」を削除しますか？\n配下のカードもすべて削除されます。`}
+          onConfirm={() => onDeleteList(list.id)}
+          onCancel={() => setShowDeleteConfirm(false)}
         />
       )}
     </div>
